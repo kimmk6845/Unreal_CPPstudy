@@ -4,5 +4,5 @@
 
 #include "CoreMinimal.h"
 
-// ╥н╠в д╚ев╟М╦╝ ╩Щ╪╨
+// К║°Й╥╦ Л╧╢М┘▄ЙЁ═К╕╛ Л┐²Л└╠
 DECLARE_LOG_CATEGORY_EXTERN(MyLogCategory, Log, All);
