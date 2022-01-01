@@ -23,7 +23,7 @@ void ACountdown::BeginPlay()
 	
 	UpdateTimerDisplay(); // 생성자에서 초기화된 CountdownTime을 출력
 
-	GetWorldTimerManager().SetTimer(CountdownTimerHandle, this, &ACountdown::AdvanceTimer, 1.0f, true);	// 타이머 실행
+	GetWorldTimerManager().SetTimer(CountdownTimerHandle, this, &ACountdown::AdvanceTimer, 1.0f, true);	// 타이머 실행 (AdvaneTimer를 1초마다 호출)
 
 }
 
