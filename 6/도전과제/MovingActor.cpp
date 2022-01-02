@@ -23,7 +23,7 @@ void AMovingActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	// ÁÂ¿ì·Î ¿òÁ÷ÀÓ ¹İº¹
+	// ì¢Œìš°ë¡œ ì›€ì§ì„ ë°˜ë³µ
 	Timer += DeltaTime;
 
 	FVector NewLocation = GetActorLocation();
