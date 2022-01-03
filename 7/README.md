@@ -1,4 +1,6 @@
 ## 플레이어 입력과 폰
+https://docs.unrealengine.com/4.27/ko/ProgrammingAndScripting/ProgrammingWithCPP/CPPTutorials/PlayerInput/
+
 Pawn 클래스를 확장해 플레이어의 입력을 반응시키기
 
 <br>
