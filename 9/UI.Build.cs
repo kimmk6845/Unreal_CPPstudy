@@ -8,12 +8,12 @@ public class UI : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore" , "UMG"});	// UMG ¸ðµâ Ãß°¡
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore" , "UMG"});	// UMG ëª¨ë“ˆ ì¶”ê°€
 
 		//PrivateDependencyModuleNames.AddRange(new string[] {  });
 
 		// Uncomment if you are using Slate UI
-		PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });	// Slate¿Í SlateCore ¸ðµâ Ãß°¡
+		PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });	// Slateì™€ SlateCore ëª¨ë“ˆ ì¶”ê°€
 		
 		// Uncomment if you are using online features
 		// PrivateDependencyModuleNames.Add("OnlineSubsystem");
