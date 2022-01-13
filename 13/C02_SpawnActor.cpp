@@ -1,6 +1,8 @@
 #include "C02_SpawnActor.h"
 #include "Global.h"
 #include "Components/StaticMeshComponent.h"
+#include "Materials/MaterialInstanceConstant.h"
+#include "Materials/MaterialInstanceDynamic.h"
 
 AC02_SpawnActor::AC02_SpawnActor()
 {
@@ -22,5 +24,32 @@ void AC02_SpawnActor::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	////// ConstructorHelpers는 생성자에서만 사용 가능하므로 여기서는 사용 불가]
+	////// 따라서, 게임 상에서 동적으로 에셋을 로딩하기 위해 StaticLoadObject를 사용함
+	////머티리얼 경로 = MaterialInstanceConstant'/Game/Materials/M_Mesh_Inst.M_Mesh_Inst'
+	//UObject* obj = StaticLoadObject(UMaterialInstanceConstant::StaticClass(), NULL, L"MaterialInstanceConstant'/Game/Materials/M_Mesh_Inst.M_Mesh_Inst'");
+	//UMaterialInstanceConstant* material = Cast<UMaterialInstanceConstant>(obj);
+
+	// CHelpers 이용
+	// 동적으로 머티리얼을 부름
+	UMaterialInstanceConstant* material;
+	CHelpers::GetAssetDynamic<UMaterialInstanceConstant>(&material, "MaterialInstanceConstant'/Game/Materials/M_Mesh_Inst.M_Mesh_Inst'");
+	// 다이나믹 머티리얼 생성
+	Material = UMaterialInstanceDynamic::Create(material, this);
+	Mesh->SetMaterial(0, Material);
+
+	UKismetSystemLibrary::K2_SetTimer(this, "ChangeColor", 1.0f, true);	// ChangeColor를 1초마다 실행시키면서 반복
+
 }
 
+void AC02_SpawnActor::ChangeColor()
+{
+	FLinearColor color;
+	color.R = UKismetMathLibrary::RandomFloatInRange(0, 1);
+	color.G = UKismetMathLibrary::RandomFloatInRange(0, 1);
+	color.B = UKismetMathLibrary::RandomFloatInRange(0, 1);
+	color.A = 1.0f;
+
+	Material->SetVectorParameterValue("Color", color);
+
+}

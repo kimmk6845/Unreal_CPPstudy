@@ -19,4 +19,11 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
+private:
+	UFUNCTION()
+		void ChangeColor();
+
+private:
+	class UMaterialInstanceDynamic* Material;
+
 };
