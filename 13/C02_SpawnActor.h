@@ -11,7 +11,7 @@ class UONLINE_CPP_API AC02_SpawnActor : public AActor
 	
 protected:
 	UPROPERTY(VisibleDefaultsOnly)
-		class UStaticMeshComponent* Mesh;	// ÄÄÆ÷³ÍÆ® º¯¼ö¿¡´Â VisibleDefaultsOnly
+		class UStaticMeshComponent* Mesh;	// ì»´í¬ë„ŒíŠ¸ ë³€ìˆ˜ì—ëŠ” VisibleDefaultsOnly
 	
 public:	
 	AC02_SpawnActor();
