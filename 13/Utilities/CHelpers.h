@@ -27,4 +27,31 @@ public:
 
 		*OutObject = obj;
 	}
+
+	// 컴포넌트 생성
+	template<typename T>
+	static void CreateComponent(AActor* InActor, T** InComponent, FName InName, USceneComponent* InParent = NULL)
+	{
+		*InComponent = InActor->CreateDefaultSubobject<T>(InName);
+
+		if (!!InParent)
+		{
+			(*InComponent)->SetupAttachment(InParent);
+
+			return;
+		}
+
+		InActor->SetRootComponent(*InComponent);
+	}
+
+	// 블루프린트 클래스 로딩
+	template<typename T>
+	static void GetClass(TSubclassOf<T>* OutClass, FString InPath)	// TSubclassOf가 기본적으로 포인터, 따라서 OutClass는 2차 포인터인 것과 마찬가지
+	{
+		ConstructorHelpers::FClassFinder<T> asset(*InPath);
+		verifyf(asset.Succeeded(), L"asset.Succeeded()");
+
+		*OutClass = asset.Class;
+	}
+
 };
