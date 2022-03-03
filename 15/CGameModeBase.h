@@ -3,6 +3,8 @@
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
 #include "PlayerWidget.h"
+#include "FPSHUD.h"
+
 #include "CGameModeBase.generated.h"
 
 UCLASS()
@@ -18,7 +20,6 @@ protected:
 
 	UPROPERTY(VisibleInstanceOnly)
 		class UPlayerWidget* StateWidget;
-
 
 public:
 	ACGameModeBase();
