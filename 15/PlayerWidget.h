@@ -22,6 +22,8 @@ protected:
 		class UTextBlock* totalAmmo;
 	UPROPERTY(meta = (BindWidget))
 		class UProgressBar* staminaBar;
+	UPROPERTY(meta = (BindWidget))
+		class UTextBlock* pickupText;
 
 public:
 	UPlayerWidget(const FObjectInitializer& ObjectInitializer);
@@ -31,4 +33,5 @@ public:
 	void SetHPBar(float health);
 	void SetRemainAmmo(int32 ammo);
 	void SetStamina(float stamina);
+	void SetHelpText(FString text);
 };

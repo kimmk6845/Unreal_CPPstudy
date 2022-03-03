@@ -14,6 +14,7 @@ void UPlayerWidget::NativeConstruct()
 	remainAmmo = Cast<UTextBlock>(GetWidgetFromName(TEXT("remainAmmo")));
 	totalAmmo = Cast<UTextBlock>(GetWidgetFromName(TEXT("totalAmmo")));
 	staminaBar = Cast<UProgressBar>(GetWidgetFromName(TEXT("staminaBar")));
+	pickupText = Cast<UTextBlock>(GetWidgetFromName(TEXT("pickupText")));
 }
 
 void UPlayerWidget::SetHP(float health)
@@ -45,5 +46,13 @@ void UPlayerWidget::SetStamina(float stamina)
 	if (IsValid(staminaBar))
 	{
 		staminaBar->SetPercent(stamina / 100);
+	}
+}
+
+void UPlayerWidget::SetHelpText(FString text)
+{
+	if (IsValid(pickupText))
+	{
+		pickupText->SetText(FText::FromString(text));
 	}
 }
