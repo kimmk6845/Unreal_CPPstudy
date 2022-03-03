@@ -1,18 +1,4 @@
 #include "FPSCharacter.h"
-#include "Global.h"
-// 컴포넌트
-#include "GameFramework/CharacterMovementComponent.h"
-#include "Camera/CameraComponent.h"
-#include "Components/CapsuleComponent.h"
-#include "Components/SkeletalMeshComponent.h"
-#include "Components/StaticMeshComponent.h"
-// 위젯 + 게임모드
-#include "Components/Widget.h"
-#include "PlayerWidget.h"
-#include "CGameModeBase.h"
-#include "DamageRecieveWidget.h"
-// 파티클
-#include "Particles/ParticleSystem.h"
 
 AFPSCharacter::AFPSCharacter()
 {
@@ -24,10 +10,11 @@ AFPSCharacter::AFPSCharacter()
 	availableSprint = true;
 	ammo = 30;
 	BaseDamage = 20.0f;
+	reach = 150.0f;
 	
 	// 카메라 컴포넌트 생성
 	CHelpers::CreateComponent<UCameraComponent>(this, &camera, "camera", GetCapsuleComponent());
-	camera->SetRelativeLocation(FVector(-10.0f, 1.75f, 64.f));
+	camera->SetRelativeLocation(FVector(0.0f, 0.0f, 10.0f + BaseEyeHeight));
 	camera->bUsePawnControlRotation = true;
 
 	// 1인칭 케릭터 컴포넌트 생성 + 메시, 애니메이션
@@ -82,6 +69,10 @@ void AFPSCharacter::BeginPlay()
 	FName GunSocketName = TEXT("GripPoint");
 	FPSGun->AttachToComponent(Mesh1p, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), GunSocketName);
 
+	// 인벤토리 설정
+	Inventory.SetNum(4);
+	currentInteractable = nullptr;
+
 	if (GetWorld())
 	{
 		ACGameModeBase* gamemode = Cast<ACGameModeBase>(GetWorld()->GetAuthGameMode());
@@ -109,8 +100,14 @@ void AFPSCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	CheckForInteractables();
+
+	PlayerWidget->SetHP(GetPlayerHP());
+	PlayerWidget->SetHPBar(GetPlayerHP());
+	PlayerWidget->SetRemainAmmo(GetAmmo());
 	PlayerWidget->SetStamina(GetPlayerStamina());
-	if (GetCharacterMovement()->MaxWalkSpeed > 400.0f)	// 스프린트 중이면 스테미너 감소
+
+	if (GetCharacterMovement()->MaxWalkSpeed > 400.0f && GetVelocity().X != 0 && GetVelocity().Y != 0)	// 스프린트 중이면 스테미너 감소
 	{
 		PlayerStamina -= DeltaTime * 10.0f;
 
@@ -170,6 +167,11 @@ void AFPSCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AFPSCharacter::OnFire);
 	PlayerInputComponent->BindAction("Fire", IE_Released, this, &AFPSCharacter::OffFire);
 	PlayerInputComponent->BindAction("Reload", IE_Pressed, this, &AFPSCharacter::Reloading);
+
+	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &AFPSCharacter::Interact);
+
+	PlayerInputComponent->BindAction("Inventory", IE_Pressed, this, &AFPSCharacter::ToggleInventory);
+
 }
 
 
@@ -247,6 +249,45 @@ void AFPSCharacter::Reloading()
 			}), WaitTime, false);
 	}
 }
+
+void AFPSCharacter::ToggleInventory()
+{
+	ACGameModeBase* gamemode = Cast<ACGameModeBase>(GetWorld()->GetAuthGameMode());
+	if (gamemode)
+	{
+		APlayerController* controller = GetWorld()->GetFirstPlayerController();
+		if (IsValid(invenClass))
+		{
+			if (toggleinven == false)
+			{
+				InventoryWidget = Cast<UInventoryWidget>(CreateWidget(GetWorld(), invenClass));
+				if (InventoryWidget != nullptr)
+				{
+					controller->bShowMouseCursor = true;
+					controller->bEnableClickEvents = true;
+					toggleinven = true;
+
+					InventoryWidget->AddToViewport();
+				}
+			}
+			else
+			{
+				controller->bShowMouseCursor = false;
+				controller->bEnableClickEvents = false;
+				toggleinven = false;
+				InventoryWidget->RemoveFromViewport();
+			}
+		}
+	}
+}
+
+void AFPSCharacter::Interact()
+{
+	if (currentInteractable != nullptr)
+	{
+		currentInteractable->Interact_Implementation();
+	}
+}
 // *************************
 
 // 사격
@@ -265,6 +306,7 @@ void AFPSCharacter::Fire()
 				FVector End = (ForwardVector * 5000.0f) + Start;
 
 				FCollisionQueryParams CollisionParams;
+				CollisionParams.AddIgnoredActor(this);
 				bool isHit = GetWorld()->LineTraceSingleByChannel(OutHit, Start, End, ECC_Visibility, CollisionParams);
 				if (isHit)
 				{
@@ -330,4 +372,78 @@ void AFPSCharacter::Fire()
 		}
 	}
 
+}
+
+void AFPSCharacter::CheckForInteractables()
+{
+	FVector StartTrace = camera->GetComponentLocation();
+	FVector EndTrace = (camera->GetForwardVector() * reach) + StartTrace;
+
+	FHitResult HitResult;
+	FCollisionQueryParams CQP;
+	CQP.AddIgnoredActor(this);
+
+	GetWorld()->LineTraceSingleByChannel(HitResult, StartTrace, EndTrace, ECC_WorldDynamic, CQP);
+
+	AInteractable* interactable = Cast<AInteractable>(HitResult.GetActor());
+	if (interactable == NULL)
+	{
+		helpText = FString("");
+		currentInteractable = nullptr;
+		PlayerWidget->SetHelpText(helpText);
+		return;
+	}
+	else
+	{
+		currentInteractable = interactable;
+		helpText = interactable->interactableHelpText;
+		PlayerWidget->SetHelpText(helpText);
+	}
+}
+
+bool AFPSCharacter::AddItemToInventory(APickupItemBase* item)
+{
+	if (item != NULL)
+	{
+		const int32 AvailableSlot = Inventory.Find(nullptr);
+
+		if (AvailableSlot != INDEX_NONE)
+		{
+			Inventory[AvailableSlot] = item;
+			return true;
+		}
+		else
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("You can't carry any more item"));
+			return false;
+		}
+	}
+	else return false;
+}
+
+UTexture2D* AFPSCharacter::GetTumbnailAtInventorySlot(int32 Slot)
+{
+	if (Inventory[Slot] != NULL)
+	{
+		return Inventory[Slot]->pickupThumbnail;
+	}
+	else return nullptr;
+}
+
+FString AFPSCharacter::GetItemNameAtInventorySlot(int32 Slot)
+{
+	if (Inventory[Slot] != NULL)
+	{
+		return Inventory[Slot]->itemName;
+	}
+	return FString("None");
+}
+
+void AFPSCharacter::UseItemAtInventorySlot(int32 Slot)
+{
+	if (Inventory[Slot] != NULL)
+	{
+		Inventory[Slot]->Use_Implementation();
+		Inventory[Slot] = NULL;
+	}
 }
