@@ -11,5 +11,5 @@ void APickup_FirstAidKit::Use_Implementation()
 {
 	GLog->Log(TEXT("Use First Aid Kit"));
 	AFPSCharacter* character = Cast<AFPSCharacter>(UGameplayStatics::GetPlayerCharacter(this, 0));
-	character->SetPlayerHP(healing);
+	character->UpdatePlayerHP(healing);
 }

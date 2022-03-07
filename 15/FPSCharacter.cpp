@@ -10,7 +10,9 @@ AFPSCharacter::AFPSCharacter()
 	availableSprint = true;
 	ammo = 30;
 	BaseDamage = 20.0f;
-	reach = 150.0f;
+	reach = 250.0f;
+	Adrenaline = false;
+	AdTime = 120.0f;
 	
 	// 카메라 컴포넌트 생성
 	CHelpers::CreateComponent<UCameraComponent>(this, &camera, "camera", GetCapsuleComponent());
@@ -75,7 +77,7 @@ void AFPSCharacter::BeginPlay()
 
 	if (GetWorld())
 	{
-		ACGameModeBase* gamemode = Cast<ACGameModeBase>(GetWorld()->GetAuthGameMode());
+		gamemode = Cast<ACGameModeBase>(GetWorld()->GetAuthGameMode());
 		if (gamemode)
 		{
 			GMD = gamemode;
@@ -120,12 +122,28 @@ void AFPSCharacter::Tick(float DeltaTime)
 	else
 	{
 		// 스테미너가 100까지 서서히 증가
-		if (PlayerStamina < 100.0f)
+		if (PlayerStamina <= 100.0f)
 		{
 			PlayerStamina += DeltaTime * 5.0f;
 
 			if (PlayerStamina > 30.0f)	// 30 이상이 되어야 스프린트가 가능하기 때문에 플레이어가 스테미너를 조절해가며 사용해야 함
 				availableSprint = true;
+		}
+	}
+
+	if (Adrenaline)	// 아드레날린 사용 시
+	{
+		AdTime -= DeltaTime * 5.0f;
+
+		GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Green, FString::Printf(TEXT("Remain Adrenaline Time: %f"), AdTime));
+
+		if (AdTime < 0)
+		{
+			AdrenalineBuffOff();	// 위젯 제거
+			BaseDamage -= 10.0f;		//  기본 데미지로 복귀
+			GLog->Log(FString("Apply Base Damage"));
+			Adrenaline = false;
+			AdTime = 120.0f;
 		}
 	}
 }
@@ -252,7 +270,6 @@ void AFPSCharacter::Reloading()
 
 void AFPSCharacter::ToggleInventory()
 {
-	ACGameModeBase* gamemode = Cast<ACGameModeBase>(GetWorld()->GetAuthGameMode());
 	if (gamemode)
 	{
 		APlayerController* controller = GetWorld()->GetFirstPlayerController();
@@ -445,5 +462,29 @@ void AFPSCharacter::UseItemAtInventorySlot(int32 Slot)
 	{
 		Inventory[Slot]->Use_Implementation();
 		Inventory[Slot] = NULL;
+	}
+}
+
+// 아드레날린 위젯
+void AFPSCharacter::AdrenalineBuffOn()
+{
+	if (gamemode)
+	{
+		if (IsValid(BuffClass))
+		{
+			AdrenalineWidget = Cast<UAdrenalineBuffWidget>(CreateWidget(GetWorld(), BuffClass));
+			if (AdrenalineWidget != nullptr)
+			{
+				AdrenalineWidget->AddToViewport();
+			}
+		}
+	}
+}
+
+void AFPSCharacter::AdrenalineBuffOff()
+{
+	if (AdrenalineWidget != nullptr)
+	{
+		AdrenalineWidget->RemoveFromViewport();
 	}
 }

@@ -22,6 +22,7 @@ float ATestHitActor::TakeDamage(float Damage, FDamageEvent const& DamageEvent, A
 
 	hp -= GetDamage;
 	UE_LOG(LogTemp, Log, TEXT("Actor hp : %f"), hp);
+	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, FString::Printf(TEXT("Damage : %f"), GetDamage));
 
 	if (hp <= 0.0f)
 	{

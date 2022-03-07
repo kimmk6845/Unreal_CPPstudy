@@ -10,5 +10,5 @@ void APickup_Pill::Use_Implementation()
 {
 	GLog->Log(TEXT("Use Pill"));
 	AFPSCharacter* character = Cast<AFPSCharacter>(UGameplayStatics::GetPlayerCharacter(this, 0));
-	character->SetPlayerHP(healing);
+	character->UpdatePlayerHP(healing);
 }

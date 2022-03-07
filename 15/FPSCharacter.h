@@ -11,6 +11,7 @@
 #include "Components/StaticMeshComponent.h"
 // 위젯 + 게임모드
 #include "Components/Widget.h"
+#include "AdrenalineBuffWidget.h"
 //#include "PlayerWidget.h"
 #include "CGameModeBase.h"
 #include "DamageRecieveWidget.h"
@@ -50,17 +51,19 @@ protected:
 
 private:
 	// 변수
+	ACGameModeBase* gamemode;
 	float PlayerHP;			// 플레이어 기본 체력
 	float PlayerStamina;	// 플레이어 스테미너
 	bool availableSprint;	// 스테미너에 따른 달리기 가능 여부 체크변수
 	bool isFiring;			// 연사를 위한 체크변수
-	FTimerHandle timer;		// 타이머 변수
+	FTimerHandle timer;		// 딜레이 타이머 변수
 	float BaseDamage;		// 플레이어 기본 데미지
 	int32 ammo;				// 탄창
 	bool IsReloading = false;	// 재장전 체크 변수
 	float reach;			// 픽업을 위한 거리
 	bool toggleinven = false;	// 인벤토리 위젯 토글 변수
-
+	bool Adrenaline;		// 아드레날린 사용 체크 변수
+	float AdTime;			// 아드레날린 적용 시간
 	 
 public:
 	// 생성자
@@ -78,9 +81,13 @@ public:
 
 	// Setter
 	UFUNCTION()
-		void SetPlayerHP(float value) { PlayerHP = PlayerHP + value; }
+		void UpdatePlayerHP(float value) { PlayerHP = PlayerHP + value; }
 	UFUNCTION()
-		void SetAdvanceDamage(float value) { BaseDamage = BaseDamage + value; }
+		void UpdateAdvanceDamage(float value) { BaseDamage = BaseDamage + value; }
+	UFUNCTION()
+		void SetPlayerStamina(float value) { PlayerStamina = value; }
+	UFUNCTION()
+		void UseAdrenaline() { Adrenaline = true; }
 
 	// 인벤토리, 픽업
 	void CheckForInteractables();
@@ -138,9 +145,13 @@ public:
 		TSubclassOf<UUserWidget> BloodEffectClass;
 	UPROPERTY(VisibleInstanceOnly)
 		class UDamageRecieveWidget* BloodEffectWidget;
-	UPROPERTY(EditAnywhere, Category = "inven")
+	UPROPERTY(EditAnywhere, Category = "invenWidget")
 		TSubclassOf<UUserWidget> invenClass;
 	class UInventoryWidget* InventoryWidget;
+	UPROPERTY(EditAnywhere, Category = "BuffWidget")
+		TSubclassOf<UUserWidget> BuffClass;
+	class UAdrenalineBuffWidget* AdrenalineWidget;
+
 
 	// 아이템 관련
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "HUD")
@@ -153,4 +164,8 @@ public:
 		FString GetItemNameAtInventorySlot(int32 Slot);
 	UFUNCTION(BlueprintCallable, Category = "Inventory Functions")
 		void UseItemAtInventorySlot(int32 Slot);
+	UFUNCTION()
+		void AdrenalineBuffOn();
+	UFUNCTION()
+		void AdrenalineBuffOff();
 };
