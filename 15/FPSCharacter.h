@@ -77,17 +77,23 @@ public:
 	UFUNCTION(BlueprintCallable)
 		float GetPlayerStamina() { return PlayerStamina; }
 	UFUNCTION(BlueprintCallable)
+		float GetBaseDamage() { return BaseDamage; }
+	UFUNCTION(BlueprintCallable)
 		bool GetAvailableSprint() { return availableSprint; }
 
 	// Setter
 	UFUNCTION()
 		void UpdatePlayerHP(float value) { PlayerHP = PlayerHP + value; }
 	UFUNCTION()
+		void SetPlayerHP(float value) { PlayerHP = value; }
+	UFUNCTION()
 		void UpdateAdvanceDamage(float value) { BaseDamage = BaseDamage + value; }
 	UFUNCTION()
 		void SetPlayerStamina(float value) { PlayerStamina = value; }
 	UFUNCTION()
 		void UseAdrenaline() { Adrenaline = true; }
+	UFUNCTION()
+		void SetAdTime(float value) { AdTime = value; }
 
 	// 인벤토리, 픽업
 	void CheckForInteractables();
@@ -139,7 +145,6 @@ public:
 		class UParticleSystem* HitEffect;
 
 	// 위젯
-	class ACGameModeBase* GMD;
 	class UPlayerWidget* PlayerWidget;
 	UPROPERTY(EditAnywhere, Category = WidgetClass)
 		TSubclassOf<UUserWidget> BloodEffectClass;

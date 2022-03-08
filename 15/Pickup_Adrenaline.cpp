@@ -12,8 +12,16 @@ void APickup_Adrenaline::Use_Implementation()
 {
 	GLog->Log(TEXT("Use Adrenaline"));
 	AFPSCharacter* character = Cast<AFPSCharacter>(UGameplayStatics::GetPlayerCharacter(this, 0));
-	character->UpdateAdvanceDamage(advanceDamage);
-	character->UseAdrenaline();
-	character->AdrenalineBuffOn();
+	if (character->GetBaseDamage() == 20.0f)
+	{
+		character->UpdateAdvanceDamage(advanceDamage);
+		character->UseAdrenaline();
+		character->AdrenalineBuffOn();
+	}
+	else
+	{
+		float reTime = 120.0f;
+		character->SetAdTime(reTime);
+	}
 }
 

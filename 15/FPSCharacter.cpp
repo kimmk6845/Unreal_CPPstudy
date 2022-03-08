@@ -80,8 +80,7 @@ void AFPSCharacter::BeginPlay()
 		gamemode = Cast<ACGameModeBase>(GetWorld()->GetAuthGameMode());
 		if (gamemode)
 		{
-			GMD = gamemode;
-			PlayerWidget = GMD->GetPlayerWidget();
+			PlayerWidget = gamemode->GetPlayerWidget();
 			if (PlayerWidget)
 			{
 				PlayerWidget->SetHP(GetPlayerHP());

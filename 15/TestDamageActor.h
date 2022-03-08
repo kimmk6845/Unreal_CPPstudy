@@ -17,6 +17,9 @@ private:
 	
 public:	
 	ATestDamageActor();
+
+	UPROPERTY(EditAnywhere)
+		float Damage;
 	
 protected:
 	virtual void BeginPlay() override;

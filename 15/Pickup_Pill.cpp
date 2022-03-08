@@ -10,5 +10,14 @@ void APickup_Pill::Use_Implementation()
 {
 	GLog->Log(TEXT("Use Pill"));
 	AFPSCharacter* character = Cast<AFPSCharacter>(UGameplayStatics::GetPlayerCharacter(this, 0));
-	character->UpdatePlayerHP(healing);
+
+	float remainHP = character->GetPlayerHP();
+	if (remainHP > 80 && remainHP <= 100.0f)
+	{
+		character->SetPlayerHP(100.0f);
+	}
+	else if (remainHP <= 80.0f)
+	{
+		character->UpdatePlayerHP(healing);
+	}
 }

@@ -9,6 +9,8 @@ ATestDamageActor::ATestDamageActor()
 	CHelpers::CreateComponent<UStaticMeshComponent>(this, &Mesh, "Mesh", BoxCollision);
 
 	Mesh->SetRelativeScale3D(FVector(0.3f));
+
+	Damage = 15.0f;
 }
 
 void ATestDamageActor::BeginPlay()
@@ -21,5 +23,5 @@ void ATestDamageActor::BeginPlay()
 
 void ATestDamageActor::ActorBeginOverlap(AActor* OverlappedActor, AActor* OtherActor)
 {
-	UGameplayStatics::ApplyDamage(OtherActor, 20.0f, nullptr, this, nullptr);
+	UGameplayStatics::ApplyDamage(OtherActor, Damage, nullptr, this, nullptr);
 }
