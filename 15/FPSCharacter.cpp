@@ -12,7 +12,7 @@ AFPSCharacter::AFPSCharacter()
 	BaseDamage = 20.0f;
 	reach = 250.0f;
 	Adrenaline = false;
-	AdTime = 120.0f;
+	AdTime = 120.0f;	// 아드레날린 버프시간 2분
 	
 	// 카메라 컴포넌트 생성
 	CHelpers::CreateComponent<UCameraComponent>(this, &camera, "camera", GetCapsuleComponent());
@@ -132,7 +132,7 @@ void AFPSCharacter::Tick(float DeltaTime)
 
 	if (Adrenaline)	// 아드레날린 사용 시
 	{
-		AdTime -= DeltaTime * 5.0f;
+		AdTime -= DeltaTime * 1.0f;
 
 		GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Green, FString::Printf(TEXT("Remain Adrenaline Time: %f"), AdTime));
 

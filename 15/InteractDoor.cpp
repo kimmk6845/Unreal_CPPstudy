@@ -45,8 +45,14 @@ void AInteractDoor::Interact_Implementation()
 
 	// tick에서 처리될 것. 동작 확인만 하기 위함
 	if (bOpen)
+	{
 		GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Yellow, TEXT("Open Door"));
+		interactableHelpText = FString("Press E to Close the door");
+	}
 	else
+	{
 		GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Yellow, TEXT("Close Door"));
+		interactableHelpText = FString("Press E to Open the door");
+	}
 
 }
