@@ -2,9 +2,13 @@
 
 AZombieBaseCharacter::AZombieBaseCharacter()
 {
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 	Tags.Add("Zombie");
+
+	// AI컨트롤 클래스 부여
+	AIControllerClass = AZombieAIController::StaticClass();
+	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 }
 
 void AZombieBaseCharacter::BeginPlay()

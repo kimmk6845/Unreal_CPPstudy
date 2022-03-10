@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "ZombieAIController.h"
 #include "ZombieBaseCharacter.generated.h"
 
 UCLASS()

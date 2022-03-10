@@ -143,6 +143,8 @@ public:
 		class UParticleSystem* ZombieHitEffect;
 	UPROPERTY(EditAnywhere, Category = Effect)
 		class UParticleSystem* HitEffect;
+	UPROPERTY(EditAnywhere, Category = Effect)
+		class UParticleSystem* HeadShotEffect;
 
 	// À§Á¬
 	class UPlayerWidget* PlayerWidget;

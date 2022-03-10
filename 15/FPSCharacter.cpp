@@ -62,6 +62,7 @@ AFPSCharacter::AFPSCharacter()
 	CHelpers::GetAsset<UParticleSystem>(&ShotEffect, "ParticleSystem'/Game/_My/particle/P_Shoot'");
 	CHelpers::GetAsset<UParticleSystem>(&ZombieHitEffect, "ParticleSystem'/Game/_My/particle/P_Blood'");
 	CHelpers::GetAsset<UParticleSystem>(&HitEffect, "ParticleSystem'/Game/_My/particle/P_BulletImpact'");
+	CHelpers::GetAsset<UParticleSystem>(&HeadShotEffect, "ParticleSystem'/Game/_My/particle/P_Head'");
 }
 
 void AFPSCharacter::BeginPlay()
@@ -338,17 +339,20 @@ void AFPSCharacter::Fire()
 						{
 							UE_LOG(LogTemp, Warning, TEXT("critical damage : %f, BoneName : %s"), HitDamage * 3, *OutHit.BoneName.ToString());
 							UGameplayStatics::ApplyPointDamage(HitActor, HitDamage * 3, HitActor->GetActorLocation(), OutHit, nullptr, this, nullptr);
+							UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HeadShotEffect, (OutHit.ImpactPoint));
 						}
 						else if (OutHit.BoneName == "Spine2")	// 상반신 2배
 						{
 							UE_LOG(LogTemp, Warning, TEXT("damage : %f, BoneName : %s"), HitDamage * 2, *OutHit.BoneName.ToString());
 							UGameplayStatics::ApplyPointDamage(HitActor, HitDamage * 2, HitActor->GetActorLocation(), OutHit, nullptr, this, nullptr);
+							UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HeadShotEffect, (OutHit.ImpactPoint));
 						}
 						else
-							UGameplayStatics::ApplyPointDamage(HitActor, HitDamage, HitActor->GetActorLocation(), OutHit, nullptr, this, nullptr);						
-						
-						if (HitActor->ActorHasTag("Zombie"))
+							UGameplayStatics::ApplyPointDamage(HitActor, HitDamage, HitActor->GetActorLocation(), OutHit, nullptr, this, nullptr);
+
+						if(HitActor->ActorHasTag("Zombie"))
 							UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ZombieHitEffect, (OutHit.ImpactPoint));
+
 					}
 					UGameplayStatics::SpawnEmitterAttached(ShotEffect, FPSGun, TEXT("Shoot"));
 					UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HitEffect, (OutHit.ImpactPoint));				// 물체 hit
