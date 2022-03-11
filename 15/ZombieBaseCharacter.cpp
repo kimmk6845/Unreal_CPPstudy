@@ -7,8 +7,9 @@ AZombieBaseCharacter::AZombieBaseCharacter()
 	Tags.Add("Zombie");
 
 	// AI컨트롤 클래스 부여
-	AIControllerClass = AZombieAIController::StaticClass();
+	CHelpers::GetClass<AController>(&AIControllerClass, "Blueprint'/Game/_My/Blueprints/Zombie/BP_ZombieAIController'");
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
+	// AIControllerClass = AZombieAIController::StaticClass();	// C 클래스
 }
 
 void AZombieBaseCharacter::BeginPlay()

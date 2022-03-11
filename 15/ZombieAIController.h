@@ -32,4 +32,5 @@ public:
 
 	static const FName HomePosKey;		// 기존 위치
 	static const FName PatrolPosKey;	// 이동할 패트롤 위치
+	static const FName TargetKey;	// 추적대상
 };
