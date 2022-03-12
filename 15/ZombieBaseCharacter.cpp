@@ -28,6 +28,8 @@ float AZombieBaseCharacter::TakeDamage(float Damage, FDamageEvent const& DamageE
 	if (baseHp <= 0.0f)
 	{
 		GetMesh()->SetCollisionProfileName("NoCollision");
+		this->GetController()->UnPossess();		// 컨트롤러 연결 끊음
+		GetCharacterMovement()->SetMovementMode(MOVE_None);
 
 		// delay (죽는 애니메이션)
 		FTimerHandle WaitHandle;
@@ -55,5 +57,5 @@ void AZombieBaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInpu
 
 void AZombieBaseCharacter::Die()
 {
-	this->Destroy();
+	this->Destroy();	
 }

@@ -4,6 +4,7 @@
 #include "GameFramework/Character.h"
 #include "ZombieAIController.h"
 #include "Global.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 #include "ZombieBaseCharacter.generated.h"
 
@@ -37,5 +38,4 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	float GetHp() { return baseHp; }
-
 };

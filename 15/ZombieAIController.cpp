@@ -8,7 +8,6 @@ AZombieAIController::AZombieAIController()
 {
 	CHelpers::GetAsset<UBlackboardData>(&BBZombie, "BlackboardData'/Game/_My/Blueprints/Zombie/BB_Zombie.BB_Zombie'");
 	CHelpers::GetAsset<UBehaviorTree>(&BTZombie, "BehaviorTree'/Game/_My/Blueprints/Zombie/BT_Zombie.BT_Zombie'");
-
 }
 
 void AZombieAIController::OnPossess(APawn* InPawn)

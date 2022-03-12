@@ -24,7 +24,6 @@ public:
 	void RunAI();
 	void StopAI();
 
-
 	UPROPERTY() 
 		class UBlackboardData* BBZombie;
 	UPROPERTY() 
