@@ -5,13 +5,18 @@
 #include "ZombieAIController.h"
 #include "Global.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Animation/AnimMontage.h"
 
 #include "ZombieBaseCharacter.generated.h"
 
+DECLARE_MULTICAST_DELEGATE(FOnAttackEndDelegate);
 UCLASS()
 class P2022_API AZombieBaseCharacter : public ACharacter
 {
 	GENERATED_BODY()
+
+private:
+	bool IsAttacking;
 
 public:
 	AZombieBaseCharacter();
@@ -35,7 +40,15 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	void Die();
+	void Attack();
+
+	FOnAttackEndDelegate OnAttackEnd;
+	UFUNCTION()
+		void OnAttackEnded();
 
 	UFUNCTION(BlueprintCallable)
 	float GetHp() { return baseHp; }
+	UFUNCTION(BlueprintCallable)
+	bool GetAttack() { return IsAttacking; }
+
 };

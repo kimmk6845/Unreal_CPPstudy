@@ -13,6 +13,6 @@ bool UBTDecorator_IsInAttackRange::CalculateRawConditionValue(UBehaviorTreeCompo
 	AFPSCharacter* Target = Cast<AFPSCharacter>(OwnerComp.GetBlackboardComponent()->GetValueAsObject(AZombieAIController::TargetKey));
 	if (nullptr == Target) return false;
 
-	bool bResult = (Target->GetDistanceTo(ControllingPawn) <= 100.0f);	// 공격범위 100 안에 들어옴
+	bool bResult = (Target->GetDistanceTo(ControllingPawn) <= 200.0f);	// 공격범위 200 안에 들어옴
 	return bResult;
 }

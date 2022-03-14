@@ -5,6 +5,9 @@ AZombieBaseCharacter::AZombieBaseCharacter()
 	PrimaryActorTick.bCanEverTick = false;
 
 	Tags.Add("Zombie");
+	IsAttacking = false;
+	GetCharacterMovement()->bUseControllerDesiredRotation = false;
+	GetCharacterMovement()->bOrientRotationToMovement = true;
 
 	// AI컨트롤 클래스 부여
 	CHelpers::GetClass<AController>(&AIControllerClass, "Blueprint'/Game/_My/Blueprints/Zombie/BP_ZombieAIController'");
@@ -59,3 +62,23 @@ void AZombieBaseCharacter::Die()
 {
 	this->Destroy();	
 }
+
+
+void AZombieBaseCharacter::Attack()
+{
+	IsAttacking = true;
+	FTimerHandle WaitHandle;
+	float WaitTime = 1.5f;	// 애니메이션 실행시간
+	GetWorld()->GetTimerManager().SetTimer(WaitHandle, FTimerDelegate::CreateLambda([&]()
+		{
+			OnAttackEnded();
+		}), WaitTime, false);
+}
+
+void AZombieBaseCharacter::OnAttackEnded()
+{
+	IsAttacking = false;
+
+	OnAttackEnd.Broadcast();
+}
+
