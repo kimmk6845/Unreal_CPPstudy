@@ -4,6 +4,7 @@ AFPSCharacter::AFPSCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
+	Tags.Add("Player");
 	GetCharacterMovement()->MaxWalkSpeed = 400.0f;	// 케릭터 기본 속도
 	PlayerHP = 100.0f;
 	PlayerStamina = 100.0f;
@@ -153,18 +154,27 @@ float AFPSCharacter::TakeDamage(float Damage, FDamageEvent const& DamageEvent, A
 {
 	const float GetDamage = Super::TakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
 
-	if (PlayerHP > 0)
+	PlayerHP -= GetDamage;
+	PlayerWidget->SetHP(GetPlayerHP());
+	PlayerWidget->SetHPBar(GetPlayerHP());
+
+	if (BloodEffectWidget != nullptr)
 	{
-		PlayerHP -= GetDamage;
-		PlayerWidget->SetHP(GetPlayerHP());
-		PlayerWidget->SetHPBar(GetPlayerHP());
-
-		if (BloodEffectWidget != nullptr)
-		{
-			BloodEffectWidget->AddToViewport();
-		}
-
+		BloodEffectWidget->AddToViewport();
 	}
+
+	//if (PlayerHP > 0)
+	//{
+	//	PlayerHP -= GetDamage;
+	//	PlayerWidget->SetHP(GetPlayerHP());
+	//	PlayerWidget->SetHPBar(GetPlayerHP());
+
+	//	if (BloodEffectWidget != nullptr)
+	//	{
+	//		BloodEffectWidget->AddToViewport();
+	//	}
+
+	//}
 
 	return 0.0f;
 }

@@ -6,6 +6,9 @@
 #include "Global.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Animation/AnimMontage.h"
+#include "Components/BoxComponent.h"
+#include "Components/CapsuleComponent.h"
+#include "FPSCharacter.h"
 
 #include "ZombieBaseCharacter.generated.h"
 
@@ -17,9 +20,11 @@ class P2022_API AZombieBaseCharacter : public ACharacter
 
 private:
 	bool IsAttacking;
+	bool IsOverlap;
+	AActor* overlapActor;
 
-public:
-	AZombieBaseCharacter();
+	UPROPERTY(VisibleAnywhere)
+		class UBoxComponent* attackBox;
 
 protected:
 	virtual void BeginPlay() override;
@@ -35,6 +40,8 @@ protected:
 		float zombieDamage;
 
 public:	
+	AZombieBaseCharacter();
+
 	virtual void Tick(float DeltaTime) override;
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
@@ -46,9 +53,17 @@ public:
 	UFUNCTION()
 		void OnAttackEnded();
 
+	UFUNCTION()
+		void ActorBeginOverlap(AActor* OverlappedActor, AActor* OtherActor);
+
+	UFUNCTION()
+		void ActorEndOverlap(AActor* OverlappedActor, AActor* OtherActor);
+	
+	UFUNCTION()
+		void OnHit();
+
 	UFUNCTION(BlueprintCallable)
 	float GetHp() { return baseHp; }
 	UFUNCTION(BlueprintCallable)
 	bool GetAttack() { return IsAttacking; }
-
 };
