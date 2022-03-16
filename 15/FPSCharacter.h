@@ -45,6 +45,7 @@ protected:
 	
 	void ToggleInventory();
 	void Interact();
+	void InteractOff();
 
 	UFUNCTION(BlueprintCallable)
 		void Fire();

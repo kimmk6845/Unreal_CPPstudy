@@ -197,6 +197,7 @@ void AFPSCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	PlayerInputComponent->BindAction("Reload", IE_Pressed, this, &AFPSCharacter::Reloading);
 
 	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &AFPSCharacter::Interact);
+	PlayerInputComponent->BindAction("Interact", IE_Released, this, &AFPSCharacter::InteractOff);
 
 	PlayerInputComponent->BindAction("Inventory", IE_Pressed, this, &AFPSCharacter::ToggleInventory);
 
@@ -313,6 +314,13 @@ void AFPSCharacter::Interact()
 	if (currentInteractable != nullptr)
 	{
 		currentInteractable->Interact_Implementation();
+	}
+}
+void AFPSCharacter::InteractOff()
+{
+	if (currentInteractable != nullptr)
+	{
+		currentInteractable->InteractOff_Implementation();
 	}
 }
 // *************************

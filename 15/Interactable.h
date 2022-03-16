@@ -20,6 +20,10 @@ public:
 		void Interact();
 	virtual void Interact_Implementation();
 
+	UFUNCTION(BlueprintNativeEvent)
+		void InteractOff();
+	virtual void InteractOff_Implementation();
+
 	UPROPERTY(EditAnywhere, Category = "Interact Properties")
 		class UStaticMeshComponent* interactableMesh;
 	UPROPERTY(EditAnywhere, Category = "Interact Properties")
