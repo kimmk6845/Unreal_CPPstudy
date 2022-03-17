@@ -7,6 +7,7 @@
 #include "FPSCharacter.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "DrawDebugHelpers.h"
+#include "ZombieBaseCharacter.h"
 
 #include "BTService_Detect.generated.h"
 

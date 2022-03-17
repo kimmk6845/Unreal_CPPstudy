@@ -15,6 +15,7 @@
 //#include "PlayerWidget.h"
 #include "CGameModeBase.h"
 #include "DamageRecieveWidget.h"
+#include "MissionWidget.h"
 // 파티클
 #include "Particles/ParticleSystem.h"
 // 아이템
@@ -47,6 +48,9 @@ protected:
 	void Interact();
 	void InteractOff();
 
+	void MissionOn();
+	void MissionOff();
+
 	UFUNCTION(BlueprintCallable)
 		void Fire();
 
@@ -65,6 +69,7 @@ private:
 	bool toggleinven = false;	// 인벤토리 위젯 토글 변수
 	bool Adrenaline;		// 아드레날린 사용 체크 변수
 	float AdTime;			// 아드레날린 적용 시간
+	int32 OccupiedTerritory;	// 터렛 점령지 개수
 	 
 public:
 	// 생성자
@@ -81,6 +86,8 @@ public:
 		float GetBaseDamage() { return BaseDamage; }
 	UFUNCTION(BlueprintCallable)
 		bool GetAvailableSprint() { return availableSprint; }
+	UFUNCTION(BlueprintCallable)
+		bool GetIsFiring() { return isFiring; }
 
 	// Setter
 	UFUNCTION()
@@ -95,6 +102,8 @@ public:
 		void UseAdrenaline() { Adrenaline = true; }
 	UFUNCTION()
 		void SetAdTime(float value) { AdTime = value; }
+	UFUNCTION()
+		void AddOccupiedTerritory() { OccupiedTerritory += 1; }
 
 	// 인벤토리, 픽업
 	void CheckForInteractables();
@@ -159,7 +168,9 @@ public:
 	UPROPERTY(EditAnywhere, Category = "BuffWidget")
 		TSubclassOf<UUserWidget> BuffClass;
 	class UAdrenalineBuffWidget* AdrenalineWidget;
-
+	UPROPERTY(EditAnywhere, Category = "Mission")
+		TSubclassOf<UUserWidget> missionClass;
+	class UMissionWidget* missionWidget;
 
 	// 아이템 관련
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "HUD")

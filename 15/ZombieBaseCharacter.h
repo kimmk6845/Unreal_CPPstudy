@@ -62,6 +62,9 @@ public:
 	UFUNCTION()
 		void OnHit();
 
+	virtual void Detect_Implementation();
+	virtual void DetectOff_Implementation();
+
 	UFUNCTION(BlueprintCallable)
 	float GetHp() { return baseHp; }
 	UFUNCTION(BlueprintCallable)

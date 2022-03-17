@@ -119,3 +119,14 @@ void AZombieBaseCharacter::OnHit()
 		overlapActor->TakeDamage(zombieDamage, DamageEvent, GetController(), this);
 	}
 }
+
+void AZombieBaseCharacter::Detect_Implementation()
+{
+	// 자식클래스에서 이동속도 조절
+	GLog->Log("Detect_Implementation Base Class : Need to Implementation at Child class");
+}
+
+void AZombieBaseCharacter::DetectOff_Implementation()
+{
+	GLog->Log("DetectOff_Implementation Base Class : Need to Implementation at Child class");
+}

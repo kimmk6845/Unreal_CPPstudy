@@ -33,21 +33,30 @@ void UBTService_Detect::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 		CollisionQueryParam
 	);
 
-	if (bResult)
+	if (bResult)	// 시야 감지 범위
 	{
 		// 감지된 액터가 플레이어인지 검사
 		for (FOverlapResult OverlapResult : OverlapResults)
 		{
 			AFPSCharacter* character = Cast<AFPSCharacter>(OverlapResult.GetActor());
+			AZombieBaseCharacter* zombie = Cast<AZombieBaseCharacter>(ControllingPawn);
 			if (character && character->GetController()->IsPlayerController())
 			{
 				OwnerComp.GetBlackboardComponent()->SetValueAsObject(AZombieAIController::TargetKey, character);
 
-				DrawDebugSphere(World, Center, DetectRadius, 16, FColor::Green, false, 0.2f);
+				if (zombie != nullptr)
+				{
+					zombie->Detect_Implementation();
+				}
+				//DrawDebugSphere(World, Center, DetectRadius, 16, FColor::Green, false, 0.2f);
 				return;
 			}
 			else
 			{
+				if (zombie != nullptr)
+				{
+					zombie->DetectOff_Implementation();
+				}
 				OwnerComp.GetBlackboardComponent()->SetValueAsObject(AZombieAIController::TargetKey, nullptr);
 			}
 		}
@@ -56,6 +65,5 @@ void UBTService_Detect::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 	{
 		OwnerComp.GetBlackboardComponent()->SetValueAsObject(AZombieAIController::TargetKey, nullptr);
 	}
-	DrawDebugSphere(World, Center, DetectRadius, 16, FColor::Red, false, 0.2f);
-
+	//DrawDebugSphere(World, Center, DetectRadius, 16, FColor::Red, false, 0.2f);
 }

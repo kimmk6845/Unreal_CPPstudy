@@ -11,4 +11,7 @@ class P2022_API AZombieMale2 : public AZombieBaseCharacter
 	
 public:
 	AZombieMale2();
+
+	virtual void Detect_Implementation() override;
+	virtual void DetectOff_Implementation() override;
 };

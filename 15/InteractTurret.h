@@ -19,6 +19,7 @@ private:
 	float occupyPercent;
 	bool IsOccupying;
 	AFPSCharacter* player;
+	int32 cnt;
 	
 public:
 	AInteractTurret();
@@ -32,7 +33,9 @@ public:
 	virtual void InteractOff_Implementation() override;
 
 	UPROPERTY(VisibleAnywhere)		
-		class UStaticMeshComponent* TurretMesh;
+		class UStaticMeshComponent* TurretTopMesh;
+	UPROPERTY(VisibleAnywhere)
+		class UStaticMeshComponent* TurretBottomMesh;
 	UPROPERTY(VisibleAnywhere)
 		class UPointLightComponent* Light;
 	UPROPERTY(VisibleAnywhere)
@@ -40,4 +43,7 @@ public:
 	class UTurretWidget* TurretWidget;
 
 	float GetOccupyPercent() { return occupyPercent; }
+
+	UFUNCTION()
+		void Succeed();
 };

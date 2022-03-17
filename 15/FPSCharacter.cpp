@@ -14,6 +14,7 @@ AFPSCharacter::AFPSCharacter()
 	reach = 250.0f;
 	Adrenaline = false;
 	AdTime = 120.0f;	// 아드레날린 버프시간 2분
+	OccupiedTerritory = 0;
 	
 	// 카메라 컴포넌트 생성
 	CHelpers::CreateComponent<UCameraComponent>(this, &camera, "camera", GetCapsuleComponent());
@@ -90,6 +91,12 @@ void AFPSCharacter::BeginPlay()
 				PlayerWidget->SetRemainAmmo(GetAmmo());
 				PlayerWidget->SetStamina(GetPlayerStamina());
 			}
+
+			if (IsValid(missionClass))
+			{
+				missionWidget = Cast<UMissionWidget>(CreateWidget(GetWorld(), missionClass));
+				missionWidget->SetMissionText(OccupiedTerritory);
+			}
 		}
 
 		if (IsValid(BloodEffectClass))	// 데미지 받았을 때 화면 붉어지는 위젯
@@ -105,10 +112,11 @@ void AFPSCharacter::Tick(float DeltaTime)
 
 	CheckForInteractables();
 
-	PlayerWidget->SetHP(GetPlayerHP());
-	PlayerWidget->SetHPBar(GetPlayerHP());
-	PlayerWidget->SetRemainAmmo(GetAmmo());
-	PlayerWidget->SetStamina(GetPlayerStamina());
+	PlayerWidget->SetHP(PlayerHP);
+	PlayerWidget->SetHPBar(PlayerHP);
+	PlayerWidget->SetRemainAmmo(ammo);
+	PlayerWidget->SetStamina(PlayerStamina);
+	missionWidget->SetMissionText(OccupiedTerritory);
 
 	if (GetCharacterMovement()->MaxWalkSpeed > 400.0f && GetVelocity().X != 0 && GetVelocity().Y != 0)	// 스프린트 중이면 스테미너 감소
 	{
@@ -136,7 +144,7 @@ void AFPSCharacter::Tick(float DeltaTime)
 	{
 		AdTime -= DeltaTime * 1.0f;
 
-		GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Green, FString::Printf(TEXT("Remain Adrenaline Time: %f"), AdTime));
+		GEngine->AddOnScreenDebugMessage(0, 1.0f, FColor::Green, FString::Printf(TEXT("Remain Adrenaline Time: %f"), AdTime));
 
 		if (AdTime < 0)
 		{
@@ -201,6 +209,8 @@ void AFPSCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 
 	PlayerInputComponent->BindAction("Inventory", IE_Pressed, this, &AFPSCharacter::ToggleInventory);
 
+	PlayerInputComponent->BindAction("Mission", IE_Pressed, this, &AFPSCharacter::MissionOn);
+	PlayerInputComponent->BindAction("Mission", IE_Released, this, &AFPSCharacter::MissionOff);
 }
 
 
@@ -323,6 +333,23 @@ void AFPSCharacter::InteractOff()
 		currentInteractable->InteractOff_Implementation();
 	}
 }
+
+void AFPSCharacter::MissionOn()
+{
+	if (missionWidget != nullptr)
+	{
+		missionWidget->AddToViewport();
+	}
+}
+
+void AFPSCharacter::MissionOff()
+{
+	if (missionWidget != nullptr)
+	{
+		missionWidget->RemoveFromViewport();
+	}
+}
+
 // *************************
 
 // 사격
