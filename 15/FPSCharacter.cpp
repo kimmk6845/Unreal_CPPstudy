@@ -91,12 +91,6 @@ void AFPSCharacter::BeginPlay()
 				PlayerWidget->SetRemainAmmo(GetAmmo());
 				PlayerWidget->SetStamina(GetPlayerStamina());
 			}
-
-			if (IsValid(missionClass))
-			{
-				missionWidget = Cast<UMissionWidget>(CreateWidget(GetWorld(), missionClass));
-				missionWidget->SetMissionText(OccupiedTerritory);
-			}
 		}
 
 		if (IsValid(BloodEffectClass))	// 데미지 받았을 때 화면 붉어지는 위젯
@@ -116,7 +110,6 @@ void AFPSCharacter::Tick(float DeltaTime)
 	PlayerWidget->SetHPBar(PlayerHP);
 	PlayerWidget->SetRemainAmmo(ammo);
 	PlayerWidget->SetStamina(PlayerStamina);
-	missionWidget->SetMissionText(OccupiedTerritory);
 
 	if (GetCharacterMovement()->MaxWalkSpeed > 400.0f && GetVelocity().X != 0 && GetVelocity().Y != 0)	// 스프린트 중이면 스테미너 감소
 	{
@@ -208,9 +201,6 @@ void AFPSCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	PlayerInputComponent->BindAction("Interact", IE_Released, this, &AFPSCharacter::InteractOff);
 
 	PlayerInputComponent->BindAction("Inventory", IE_Pressed, this, &AFPSCharacter::ToggleInventory);
-
-	PlayerInputComponent->BindAction("Mission", IE_Pressed, this, &AFPSCharacter::MissionOn);
-	PlayerInputComponent->BindAction("Mission", IE_Released, this, &AFPSCharacter::MissionOff);
 }
 
 
@@ -331,22 +321,6 @@ void AFPSCharacter::InteractOff()
 	if (currentInteractable != nullptr)
 	{
 		currentInteractable->InteractOff_Implementation();
-	}
-}
-
-void AFPSCharacter::MissionOn()
-{
-	if (missionWidget != nullptr)
-	{
-		missionWidget->AddToViewport();
-	}
-}
-
-void AFPSCharacter::MissionOff()
-{
-	if (missionWidget != nullptr)
-	{
-		missionWidget->RemoveFromViewport();
 	}
 }
 

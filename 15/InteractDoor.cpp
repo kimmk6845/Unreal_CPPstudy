@@ -8,6 +8,14 @@ AInteractDoor::AInteractDoor()
 	CHelpers::CreateComponent<UStaticMeshComponent>(this, &DoorFrame, "DoorFrame", RootComponent);
 	CHelpers::CreateComponent<UStaticMeshComponent>(this, &interactableMesh, "interactDoor",DoorFrame);
 	interactableHelpText = FString("Press E to Open the door");
+	interactableMesh->SetRelativeRotation(FRotator(0.0f, 180.0f, 0.0f));	// ai 네비게이션을 위해 열어둠
+}
+
+void AInteractDoor::BeginPlay()
+{
+	Super::BeginPlay();
+
+	interactableMesh->SetRelativeRotation(FRotator(0.0f, 0.0f, 0.0f));
 }
 
 void AInteractDoor::Tick(float DeltaTime)

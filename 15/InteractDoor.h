@@ -17,6 +17,8 @@ private:
 public:
 	AInteractDoor();
 
+	virtual void BeginPlay() override;
+
 	virtual void Tick(float DeltaTime) override;
 	
 	virtual void Interact_Implementation() override;

@@ -11,7 +11,7 @@ AInteractTurret::AInteractTurret()
 	CHelpers::CreateComponent<UWidgetComponent>(this, &widget, "widget", TurretTopMesh);
 	interactableHelpText = FString("Press E to occupy the turret");
 	occupyPercent = 0.0f;
-	cnt = 0;
+	complete = false;
 }
 
 void AInteractTurret::BeginPlay()
@@ -57,9 +57,9 @@ void AInteractTurret::Tick(float DeltaTime)
 
 		TurretTopMesh->SetRelativeRotation(FRotator(pitch, Yaw, roll));
 
-		if (cnt == 0)
+		if (complete == false)
 		{
-			cnt++;
+			complete = true;
 			Succeed();
 		}
 	}

@@ -19,7 +19,7 @@ private:
 	float occupyPercent;
 	bool IsOccupying;
 	AFPSCharacter* player;
-	int32 cnt;
+	bool complete;
 	
 public:
 	AInteractTurret();

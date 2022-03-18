@@ -3,21 +3,24 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "Global.h"
+
 // 컴포넌트
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Components/StaticMeshComponent.h"
+
 // 위젯 + 게임모드
 #include "Components/Widget.h"
 #include "AdrenalineBuffWidget.h"
 //#include "PlayerWidget.h"
 #include "CGameModeBase.h"
 #include "DamageRecieveWidget.h"
-#include "MissionWidget.h"
+
 // 파티클
 #include "Particles/ParticleSystem.h"
+
 // 아이템
 #include "Interactable.h"
 #include "PickupItemBase.h"
@@ -47,9 +50,6 @@ protected:
 	void ToggleInventory();
 	void Interact();
 	void InteractOff();
-
-	void MissionOn();
-	void MissionOff();
 
 	UFUNCTION(BlueprintCallable)
 		void Fire();
@@ -88,6 +88,8 @@ public:
 		bool GetAvailableSprint() { return availableSprint; }
 	UFUNCTION(BlueprintCallable)
 		bool GetIsFiring() { return isFiring; }
+	UFUNCTION(BlueprintCallable)
+		int32 GetOccupiedTurret() { return OccupiedTerritory; }
 
 	// Setter
 	UFUNCTION()
@@ -103,7 +105,10 @@ public:
 	UFUNCTION()
 		void SetAdTime(float value) { AdTime = value; }
 	UFUNCTION()
-		void AddOccupiedTerritory() { OccupiedTerritory += 1; }
+		void AddOccupiedTerritory() { 
+		OccupiedTerritory += 1; 
+		PlayerWidget->SetMissionText(OccupiedTerritory);
+	}
 
 	// 인벤토리, 픽업
 	void CheckForInteractables();
@@ -168,9 +173,6 @@ public:
 	UPROPERTY(EditAnywhere, Category = "BuffWidget")
 		TSubclassOf<UUserWidget> BuffClass;
 	class UAdrenalineBuffWidget* AdrenalineWidget;
-	UPROPERTY(EditAnywhere, Category = "Mission")
-		TSubclassOf<UUserWidget> missionClass;
-	class UMissionWidget* missionWidget;
 
 	// 아이템 관련
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "HUD")

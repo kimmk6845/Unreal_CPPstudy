@@ -15,6 +15,7 @@ void UPlayerWidget::NativeConstruct()
 	totalAmmo = Cast<UTextBlock>(GetWidgetFromName(TEXT("totalAmmo")));
 	staminaBar = Cast<UProgressBar>(GetWidgetFromName(TEXT("staminaBar")));
 	pickupText = Cast<UTextBlock>(GetWidgetFromName(TEXT("pickupText")));
+	missionText = Cast<UTextBlock>(GetWidgetFromName(TEXT("missionText")));
 }
 
 void UPlayerWidget::SetHP(float health)
@@ -54,5 +55,13 @@ void UPlayerWidget::SetHelpText(FString text)
 	if (IsValid(pickupText))
 	{
 		pickupText->SetText(FText::FromString(text));
+	}
+}
+
+void UPlayerWidget::SetMissionText(int32 turretNum)
+{
+	if (IsValid(missionText))
+	{
+		missionText->SetText(FText::FromString(FString::FromInt(turretNum)));
 	}
 }
