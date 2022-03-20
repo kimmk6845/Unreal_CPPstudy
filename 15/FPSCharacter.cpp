@@ -155,27 +155,25 @@ float AFPSCharacter::TakeDamage(float Damage, FDamageEvent const& DamageEvent, A
 {
 	const float GetDamage = Super::TakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
 
-	PlayerHP -= GetDamage;
-	PlayerWidget->SetHP(GetPlayerHP());
-	PlayerWidget->SetHPBar(GetPlayerHP());
-
-	if (BloodEffectWidget != nullptr)
+	if (PlayerHP > 0)
 	{
-		BloodEffectWidget->AddToViewport();
+		PlayerHP -= GetDamage;
+
+		if(PlayerHP <= 0)
+			PlayerHP = 0.0f;
+
+		if (BloodEffectWidget != nullptr)
+		{
+			BloodEffectWidget->AddToViewport();
+		}
+	}
+	else
+	{
+		// die
 	}
 
-	//if (PlayerHP > 0)
-	//{
-	//	PlayerHP -= GetDamage;
-	//	PlayerWidget->SetHP(GetPlayerHP());
-	//	PlayerWidget->SetHPBar(GetPlayerHP());
-
-	//	if (BloodEffectWidget != nullptr)
-	//	{
-	//		BloodEffectWidget->AddToViewport();
-	//	}
-
-	//}
+	PlayerWidget->SetHP(GetPlayerHP());
+	PlayerWidget->SetHPBar(GetPlayerHP());
 
 	return 0.0f;
 }
@@ -193,8 +191,10 @@ void AFPSCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	// 액션 매핑 바인딩
 	PlayerInputComponent->BindAction("Sprint", IE_Pressed, this, &AFPSCharacter::OnRunning);
 	PlayerInputComponent->BindAction("Sprint", IE_Released, this, &AFPSCharacter::OffRunning);
+
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AFPSCharacter::OnFire);
 	PlayerInputComponent->BindAction("Fire", IE_Released, this, &AFPSCharacter::OffFire);
+
 	PlayerInputComponent->BindAction("Reload", IE_Pressed, this, &AFPSCharacter::Reloading);
 
 	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &AFPSCharacter::Interact);
@@ -337,17 +337,21 @@ void AFPSCharacter::Fire()
 			if (isFiring)
 			{
 				FHitResult OutHit;
-				FVector Start = FPSGun->GetComponentLocation();
+
+				FVector Start = camera->GetComponentLocation() - FVector(0.0f, 0.0f, 7.0f);
 				FVector ForwardVector = camera->GetForwardVector();
 				FVector End = (ForwardVector * 5000.0f) + Start;
-
+				
 				FCollisionQueryParams CollisionParams;
 				CollisionParams.AddIgnoredActor(this);
+				//DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, 10.0f);
 				bool isHit = GetWorld()->LineTraceSingleByChannel(OutHit, Start, End, ECC_Visibility, CollisionParams);
 				if (isHit)
 				{
 					if (OutHit.bBlockingHit)
 					{
+						//DrawDebugSolidBox(GetWorld(), OutHit.ImpactPoint, FVector(10.0f), FColor::Blue, false, 10.0f);
+			
 						//GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Magenta, FString::Printf(TEXT("Hit Actor: %s"), *OutHit.GetActor()->GetName()));
 						//GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Blue, FString::Printf(TEXT("Impact Point: %s"), *OutHit.ImpactPoint.ToString()));
 						//GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Green, FString::Printf(TEXT("Impact Normal: %s"), *OutHit.ImpactNormal.ToString()));

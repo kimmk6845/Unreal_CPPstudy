@@ -34,7 +34,7 @@ float AZombieBaseCharacter::TakeDamage(float Damage, FDamageEvent const& DamageE
 
 	if (baseHp <= 0.0f)
 	{
-		GetMesh()->SetCollisionProfileName("NoCollision");
+		GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		this->GetController()->UnPossess();		// 컨트롤러 연결 끊음
 		GetCharacterMovement()->SetMovementMode(MOVE_None);
 
