@@ -28,12 +28,12 @@ void UBTService_Detect::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 		OverlapResults,
 		Center,
 		FQuat::Identity,
-		ECollisionChannel::ECC_GameTraceChannel2,
+		ECollisionChannel::ECC_GameTraceChannel4,	// 플레이어만 감지할 수 있는 채널
 		FCollisionShape::MakeSphere(DetectRadius),
 		CollisionQueryParam
 	);
 
-	if (bResult)	// 시야 감지 범위
+	if (bResult)
 	{
 		// 감지된 액터가 플레이어인지 검사
 		for (FOverlapResult OverlapResult : OverlapResults)

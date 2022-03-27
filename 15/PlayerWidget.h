@@ -25,7 +25,9 @@ protected:
 	UPROPERTY(meta = (BindWidget))
 		class UTextBlock* pickupText;
 	UPROPERTY(meta = (BindWidget))
-		class UTextBlock* missionText;
+		class UTextBlock* missionText;	// 터렛 숫자 표기
+	UPROPERTY(meta = (BindWidget))
+		class UTextBlock* infoText;		// 미션 내용
 
 public:
 	UPlayerWidget(const FObjectInitializer& ObjectInitializer);
@@ -37,4 +39,5 @@ public:
 	void SetStamina(float stamina);
 	void SetHelpText(FString text);
 	void SetMissionText(int32 turretNum);
+	void SetInfoText(FString text);
 };

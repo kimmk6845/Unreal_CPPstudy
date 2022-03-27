@@ -16,6 +16,7 @@ void UPlayerWidget::NativeConstruct()
 	staminaBar = Cast<UProgressBar>(GetWidgetFromName(TEXT("staminaBar")));
 	pickupText = Cast<UTextBlock>(GetWidgetFromName(TEXT("pickupText")));
 	missionText = Cast<UTextBlock>(GetWidgetFromName(TEXT("missionText")));
+	infoText = Cast<UTextBlock>(GetWidgetFromName(TEXT("infoText")));
 }
 
 void UPlayerWidget::SetHP(float health)
@@ -63,5 +64,13 @@ void UPlayerWidget::SetMissionText(int32 turretNum)
 	if (IsValid(missionText))
 	{
 		missionText->SetText(FText::FromString(FString::FromInt(turretNum)));
+	}
+}
+
+void UPlayerWidget::SetInfoText(FString text)
+{
+	if (IsValid(infoText))
+	{
+		infoText->SetText(FText::FromString(text));
 	}
 }

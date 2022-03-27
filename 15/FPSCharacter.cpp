@@ -57,8 +57,8 @@ AFPSCharacter::AFPSCharacter()
 
 	// 사운드
 	CHelpers::GetAsset<USoundBase>(&FireSound, "SoundWave'/Game/FirstPerson/Audio/FirstPersonTemplateWeaponFire02'");
-	CHelpers::GetAsset<USoundBase>(&EmptyAmmo, "SoundWave'/Game/_My/Audio/OutOfAmmo'");
-	CHelpers::GetAsset<USoundBase>(&ReloadSound, "SoundWave'/Game/_My/Audio/reload'");
+	CHelpers::GetAsset<USoundBase>(&EmptyAmmo, "SoundWave'/Game/_My/Audio/OriginSound/OutOfAmmo'");
+	CHelpers::GetAsset<USoundBase>(&ReloadSound, "SoundWave'/Game/_My/Audio/OriginSound/reload'");
 
 	// 파티클
 	CHelpers::GetAsset<UParticleSystem>(&ShotEffect, "ParticleSystem'/Game/_My/particle/P_Shoot'");
@@ -96,6 +96,11 @@ void AFPSCharacter::BeginPlay()
 		if (IsValid(BloodEffectClass))	// 데미지 받았을 때 화면 붉어지는 위젯
 		{
 			BloodEffectWidget = Cast<UDamageRecieveWidget>(CreateWidget(GetWorld(), BloodEffectClass));
+		}
+
+		if (IsValid(WinClass))
+		{
+			WinWidget = Cast<UEscapeWidget>(CreateWidget(GetWorld(), WinClass));
 		}
 	}
 }
@@ -147,6 +152,11 @@ void AFPSCharacter::Tick(float DeltaTime)
 			Adrenaline = false;
 			AdTime = 120.0f;
 		}
+	}
+
+	if (OccupiedTerritory == 5)		// 미션내용 변경
+	{
+		PlayerWidget->SetInfoText("- Escape  the  camp!!");
 	}
 }
 
@@ -340,7 +350,7 @@ void AFPSCharacter::Fire()
 
 				FVector Start = camera->GetComponentLocation() - FVector(0.0f, 0.0f, 7.0f);
 				FVector ForwardVector = camera->GetForwardVector();
-				FVector End = (ForwardVector * 5000.0f) + Start;
+				FVector End = (ForwardVector * 8000.0f) + Start;
 				
 				FCollisionQueryParams CollisionParams;
 				CollisionParams.AddIgnoredActor(this);
@@ -512,5 +522,16 @@ void AFPSCharacter::AdrenalineBuffOff()
 	if (AdrenalineWidget != nullptr)
 	{
 		AdrenalineWidget->RemoveFromViewport();
+	}
+}
+
+void AFPSCharacter::Win()
+{
+	if (WinWidget != nullptr)
+	{
+		PrimaryActorTick.bCanEverTick = false;
+
+		PlayerWidget->RemoveFromParent();
+		WinWidget->AddToViewport();
 	}
 }

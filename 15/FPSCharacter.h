@@ -17,6 +17,7 @@
 //#include "PlayerWidget.h"
 #include "CGameModeBase.h"
 #include "DamageRecieveWidget.h"
+#include "EscapeWidget.h"
 
 // 파티클
 #include "Particles/ParticleSystem.h"
@@ -163,16 +164,19 @@ public:
 
 	// 위젯
 	class UPlayerWidget* PlayerWidget;
-	UPROPERTY(EditAnywhere, Category = WidgetClass)
+	UPROPERTY(EditAnywhere, Category = "Widget")
 		TSubclassOf<UUserWidget> BloodEffectClass;
 	UPROPERTY(VisibleInstanceOnly)
 		class UDamageRecieveWidget* BloodEffectWidget;
-	UPROPERTY(EditAnywhere, Category = "invenWidget")
+	UPROPERTY(EditAnywhere, Category = "Widget")
 		TSubclassOf<UUserWidget> invenClass;
 	class UInventoryWidget* InventoryWidget;
-	UPROPERTY(EditAnywhere, Category = "BuffWidget")
+	UPROPERTY(EditAnywhere, Category = "Widget")
 		TSubclassOf<UUserWidget> BuffClass;
 	class UAdrenalineBuffWidget* AdrenalineWidget;
+	UPROPERTY(EditAnywhere, Category = "Widget")
+		TSubclassOf<UUserWidget> WinClass;
+	class UEscapeWidget* WinWidget;
 
 	// 아이템 관련
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "HUD")
@@ -189,4 +193,8 @@ public:
 		void AdrenalineBuffOn();
 	UFUNCTION()
 		void AdrenalineBuffOff();
+
+	// 승리
+	UFUNCTION()
+		void Win();
 };

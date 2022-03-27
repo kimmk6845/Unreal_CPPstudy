@@ -11,12 +11,11 @@ void AInteractEscape::Interact_Implementation()
 	AFPSCharacter* character = Cast<AFPSCharacter>(UGameplayStatics::GetPlayerCharacter(this, 0));
 	if (character->GetOccupiedTurret() == 5)
 	{
-		// 게임 승리
 		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("YOU WIN."));
+		character->Win();
 	}
 	else
 	{
-		// 점령되지 않은 터렛이 있다는 출력문
 		GLog->Log("Not enough condition");
 	}
 }

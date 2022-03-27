@@ -11,7 +11,7 @@ UCLASS()
 class P2022_API AInteractEscape : public AInteractable
 {
 	GENERATED_BODY()
-	
+
 public:
 	AInteractEscape();
 
