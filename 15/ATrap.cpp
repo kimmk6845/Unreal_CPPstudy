@@ -4,6 +4,9 @@ AATrap::AATrap()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
+	Damage = 60.0f;
+	GetDamaged = false;
+
 	CHelpers::CreateComponent<USceneComponent>(this, &Scene, "Scene");
 	CHelpers::CreateComponent<UBoxComponent>(this, &BoxCollision, "BoxCollision", Scene);
 	CHelpers::CreateComponent<UStaticMeshComponent>(this, &TrapMeshBody, "TrapMeshBody", Scene);
@@ -30,7 +33,12 @@ void AATrap::Tick(float DeltaTime)
 
 	if (IsOverlap)
 	{
-		// 덫 메시 rotation 바꾸기
+		float roll = TrapMesh1->GetRelativeRotation().Roll + (DeltaTime * 200.0f);
+		if (roll <= 60.0f)
+		{
+			TrapMesh1->SetRelativeRotation(FRotator(0.0f, 0.0f, roll));
+			TrapMesh2->SetRelativeRotation(FRotator(0.0f, 0.0f, -roll));
+		}
 	}
 }
 
@@ -39,5 +47,11 @@ void AATrap::ActorBeginOverlap(AActor* OverlappedActor, AActor* OtherActor)
 	if (OtherActor == player)
 	{
 		IsOverlap = true;
+
+		if (GetDamaged == false)
+		{
+			UGameplayStatics::ApplyDamage(OtherActor, Damage, nullptr, this, nullptr);
+			GetDamaged = true;
+		}
 	}
 }

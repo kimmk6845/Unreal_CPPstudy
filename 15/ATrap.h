@@ -28,6 +28,8 @@ private:
 
 	bool IsOverlap;
 	AFPSCharacter* player;
+	float Damage;
+	bool GetDamaged;
 
 protected:
 	virtual void BeginPlay() override;

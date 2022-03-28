@@ -67,8 +67,8 @@ void AZombieBaseCharacter::Die()
 	this->Destroy();	
 }
 
-// 공격애니메이션에 맞춰서 데미지를 줘야 함... &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
-// 중복으로 여러번에 거쳐 데미지가 들어가고 있음... &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+// 공격애니메이션에 맞춰서 데미지를 줘야 함...
+// 중복으로 여러번에 거쳐 데미지가 들어가고 있음...
 void AZombieBaseCharacter::Attack()
 {
 	if (IsOverlap)
@@ -80,7 +80,6 @@ void AZombieBaseCharacter::Attack()
 			{
 				OnHit();
 				OnAttackEnded();
-				GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::White, TEXT("attack"));
 			}), WaitTime, false);
 	}
 }
@@ -94,17 +93,16 @@ void AZombieBaseCharacter::OnAttackEnded()
 
 void AZombieBaseCharacter::ActorBeginOverlap(AActor* OverlappedActor, AActor* OtherActor)
 {
-	overlapActor = OtherActor;
-	if (overlapActor->ActorHasTag("Player"))
+	player = Cast<AFPSCharacter>(UGameplayStatics::GetPlayerCharacter(this, 0));
+	if (OtherActor == player)
 	{
 		IsOverlap = true;
-		GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Red, TEXT("Overlap"));
 	}
 }
 
 void AZombieBaseCharacter::ActorEndOverlap(AActor* OverlappedActor, AActor* OtherActor)
 {
-	if (overlapActor->ActorHasTag("Player"))
+	if (OtherActor == player)
 	{
 		IsOverlap = false;
 	}
@@ -113,10 +111,11 @@ void AZombieBaseCharacter::ActorEndOverlap(AActor* OverlappedActor, AActor* Othe
 
 void AZombieBaseCharacter::OnHit()
 {
-	if (IsAttacking && IsOverlap && overlapActor->ActorHasTag("Player"))
+	if (IsAttacking && IsOverlap)
 	{
 		FDamageEvent DamageEvent;
-		overlapActor->TakeDamage(zombieDamage, DamageEvent, GetController(), this);
+		UGameplayStatics::ApplyDamage(player, zombieDamage, GetController(), this, nullptr);
+		//player->TakeDamage(zombieDamage, DamageEvent, GetController(), this);
 	}
 }
 

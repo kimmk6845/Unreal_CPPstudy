@@ -21,7 +21,7 @@ class P2022_API AZombieBaseCharacter : public ACharacter
 private:
 	bool IsAttacking;
 	bool IsOverlap;
-	AActor* overlapActor;
+	AFPSCharacter* player;
 
 	UPROPERTY(VisibleAnywhere)
 		class UBoxComponent* attackBox;
