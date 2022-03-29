@@ -23,7 +23,7 @@
 
 총기 반동
 
-<img width="80%" src="https://user-images.githubusercontent.com/71704350/160576602-0555f712-5d21-4ea3-8dd9-19bef21a3f49.gif"/>
+<img width="80%" src="https://user-images.githubusercontent.com/71704350/160577169-b99943bd-a088-4ea5-9d23-26c263c3886c.gif"/>
 
 센서등
 
