@@ -43,7 +43,7 @@
 
 아이템 박스
 
-
+<img width="80%" src="https://user-images.githubusercontent.com/71704350/160580178-1f680976-3903-4880-b791-6cbd7889081b.gif"/>
 
 알약
 
