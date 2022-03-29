@@ -27,7 +27,7 @@
 
 센서등
 
-<img width="80%" src="https://user-images.githubusercontent.com/71704350/160577169-b99943bd-a088-4ea5-9d23-26c263c3886c.gif"/>
+<img width="80%" src="https://user-images.githubusercontent.com/71704350/160579166-90cf8d45-2d05-4602-8761-71349ab10a76.gif"/>
 
 전등
 
