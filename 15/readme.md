@@ -59,3 +59,4 @@ First Aid Kit
 
 좀비 + 아드레날린 버프
 
+<img width="80%" src="https://user-images.githubusercontent.com/71704350/160581107-f1841d43-08e6-46fc-88cf-776966f07a8b.gif"/>
