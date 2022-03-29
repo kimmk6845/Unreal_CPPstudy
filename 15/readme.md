@@ -27,19 +27,19 @@
 
 센서등
 
-
+<img width="80%" src="https://user-images.githubusercontent.com/71704350/160577169-b99943bd-a088-4ea5-9d23-26c263c3886c.gif"/>
 
 전등
 
-
+<img width="80%" src="https://user-images.githubusercontent.com/71704350/160579300-8fd012fd-806e-4ea0-8dd5-53f31c8a33fb.gif"/>
 
 문
 
-
+<img width="80%" src="https://user-images.githubusercontent.com/71704350/160579147-ec19976b-93d1-42a7-a134-e71e2e4dcb3d.gif"/>
 
 터렛
 
-
+<img width="80%" src="https://user-images.githubusercontent.com/71704350/160579321-7ca47cea-375b-4c36-8212-4b8edea2ece2.gif"/>
 
 아이템 박스
 
@@ -47,15 +47,15 @@
 
 알약
 
-
+<img width="80%" src="https://user-images.githubusercontent.com/71704350/160579281-9c71131a-f0ae-4abf-887b-3d70894d80d2.gif"/>
 
 스테미너
 
-
+<img width="80%" src="https://user-images.githubusercontent.com/71704350/160579173-5cfe5db5-3fdd-440e-b583-7c09b8423422.gif"/>
 
 First Aid Kit
 
-
+<img width="80%" src="https://user-images.githubusercontent.com/71704350/160579137-61dae937-b5b8-47b1-b496-2a04df75e984.gif"/>
 
 좀비 + 아드레날린 버프
 
