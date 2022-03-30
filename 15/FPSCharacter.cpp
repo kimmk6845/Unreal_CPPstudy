@@ -142,7 +142,7 @@ void AFPSCharacter::Tick(float DeltaTime)
 	{
 		AdTime -= DeltaTime * 1.0f;
 
-		GEngine->AddOnScreenDebugMessage(0, 1.0f, FColor::Green, FString::Printf(TEXT("Remain Adrenaline Time: %f"), AdTime));
+		//GEngine->AddOnScreenDebugMessage(0, 1.0f, FColor::Green, FString::Printf(TEXT("Remain Adrenaline Time: %f"), AdTime));
 
 		if (AdTime < 0)
 		{
@@ -467,7 +467,7 @@ bool AFPSCharacter::AddItemToInventory(APickupItemBase* item)
 		}
 		else
 		{
-			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("You can't carry any more item"));
+			//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("You can't carry any more item"));
 			return false;
 		}
 	}
@@ -531,7 +531,6 @@ void AFPSCharacter::Win()
 	{
 		PrimaryActorTick.bCanEverTick = false;
 
-		PlayerWidget->RemoveFromParent();
 		WinWidget->AddToViewport();
 	}
 }

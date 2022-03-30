@@ -11,7 +11,7 @@ void AInteractEscape::Interact_Implementation()
 	AFPSCharacter* character = Cast<AFPSCharacter>(UGameplayStatics::GetPlayerCharacter(this, 0));
 	if (character->GetOccupiedTurret() == 5)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("YOU WIN."));
+		//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("YOU WIN."));
 		character->Win();
 	}
 	else

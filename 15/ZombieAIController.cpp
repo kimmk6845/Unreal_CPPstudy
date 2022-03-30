@@ -14,11 +14,6 @@ void AZombieAIController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
 	RunAI();
-
-	/*if (UseBlackboard(BBZombie, Blackboard))
-	{
-		Blackboard->SetValueAsVector(HomePosKey, InPawn->GetActorLocation());
-	}*/
 }
 
 

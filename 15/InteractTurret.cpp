@@ -30,7 +30,7 @@ void AInteractTurret::Tick(float DeltaTime)
 
 	if (IsOccupying)
 	{
-		GEngine->AddOnScreenDebugMessage(0, 1.0f, FColor::White, FString::Printf(TEXT("Percent : %f"), occupyPercent));
+		//GEngine->AddOnScreenDebugMessage(0, 1.0f, FColor::White, FString::Printf(TEXT("Percent : %f"), occupyPercent));
 		if (occupyPercent < 100.0f)
 		{
 			occupyPercent += DeltaTime * 30.0f;		// 점령까지 약 33초 소요	(30은 임시 --> 3.0f로 변경....)
