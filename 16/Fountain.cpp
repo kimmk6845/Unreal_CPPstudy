@@ -1,6 +1,6 @@
 #include "Fountain.h"
-#include "Components/PointLightComponent.h"
-#include "Particles/ParticleSystemComponent.h"
+//#include "Components/PointLightComponent.h"
+//#include "Particles/ParticleSystemComponent.h"
 
 AFountain::AFountain()
 {
@@ -41,17 +41,37 @@ AFountain::AFountain()
 		Splash->SetTemplate(PS_SPLASH.Object);
 	}
 
+
+	RotateSpeed = 30.0f;
 }
 
 void AFountain::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	ABLOG_S(Warning);
+	ABLOG(Warning, TEXT("Actor Name : %s, ID : %d, Location X: %.3f"), *GetName(), ID, GetActorLocation().X);
+}
+
+void AFountain::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	Super::EndPlay(EndPlayReason);
+	ABLOG_S(Warning);
+}
+
+void AFountain::PostInitializeComponents()	
+{
+	// 액터에 속한 모든 컴포넌트의 세팅이 완료되면 호출되는 함수
+
+	Super::PostInitializeComponents();
+	ABLOG_S(Warning);
 }
 
 void AFountain::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	AddActorLocalRotation(FRotator(0.0f, RotateSpeed * DeltaTime, 0.0f));	// 틱마다 회전
 
 }
 
