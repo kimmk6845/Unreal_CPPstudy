@@ -1,0 +1,55 @@
+#pragma once
+
+#include "ArenaBattle.h"
+#include "GameFramework/Character.h"
+#include "ABCharacter.generated.h"
+
+UCLASS()
+class ARENABATTLE_API AABCharacter : public ACharacter
+{
+	GENERATED_BODY()
+
+private:
+	// 축매핑
+	void MoveForward(float AxisValue);
+	void MoveRight(float AxisValue);
+	void Turn(float AxisValue);
+	void LookUp(float AxisValue);
+
+	// 액션매핑
+	void ViewChange();			// 시점 변환
+
+public:
+	AABCharacter();
+
+	UPROPERTY(VisibleAnywhere, Category = "Camera")
+		USpringArmComponent* SpringArm;
+
+	UPROPERTY(VisibleAnywhere, Category = "Camera")
+		UCameraComponent* Camera;
+
+protected:
+	virtual void BeginPlay() override;
+
+	enum class EControlMode
+	{
+		GTA,
+		DIABLO
+	};
+
+	void SetControlMode(EControlMode ControlMode);			// 시점 적용 함수
+	EControlMode CurrentControlMode = EControlMode::GTA;
+	FVector DirectionToMove = FVector::ZeroVector;
+
+	// 시점 변환을 부드럽게 하기 위한 변수
+	float ArmLengthTo = 0.0f;
+	FRotator ArmRotationTo = FRotator::ZeroRotator;
+	float ArmLengthSpeed = 0.0f;
+	float ArmRotationSpeed = 0.0f;
+
+public:	
+	virtual void Tick(float DeltaTime) override;
+
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+};
