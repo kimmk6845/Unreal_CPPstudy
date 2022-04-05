@@ -36,6 +36,9 @@ AABCharacter::AABCharacter()
 	// 시점 변환에 해당하는 변수 초기화
 	ArmLengthSpeed = 3.0f;
 	ArmRotationSpeed = 10.0f;
+
+	// 점프 높이 설정
+	GetCharacterMovement()->JumpZVelocity = 800.0f;
 }
 
 void AABCharacter::BeginPlay()
@@ -123,6 +126,7 @@ void AABCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 
 	// 액션 매핑
 	PlayerInputComponent->BindAction("ViewChange", IE_Pressed, this, &AABCharacter::ViewChange);
+	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &AABCharacter::Jump);
 
 }
 
