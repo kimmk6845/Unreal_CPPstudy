@@ -1,5 +1,5 @@
 #include "ABCharacter.h"
-
+#include "ABAnimInstance.h"
 
 AABCharacter::AABCharacter()
 {
@@ -30,15 +30,17 @@ AABCharacter::AABCharacter()
 		GetMesh()->SetAnimInstanceClass(WARRIOR_ANIM.Class);
 	}
 
+	//// 변수 초기화
 	// 카메라 시점
 	SetControlMode(EControlMode::DIABLO);
-
 	// 시점 변환에 해당하는 변수 초기화
 	ArmLengthSpeed = 3.0f;
 	ArmRotationSpeed = 10.0f;
-
 	// 점프 높이 설정
 	GetCharacterMovement()->JumpZVelocity = 800.0f;
+	// 공격 중인지
+	IsAttacking = false;
+
 }
 
 void AABCharacter::BeginPlay()
@@ -127,7 +129,17 @@ void AABCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	// 액션 매핑
 	PlayerInputComponent->BindAction("ViewChange", IE_Pressed, this, &AABCharacter::ViewChange);
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &AABCharacter::Jump);
+	PlayerInputComponent->BindAction("Attack", IE_Pressed, this, &AABCharacter::Attack);
 
+}
+
+void AABCharacter::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+	ABAnim = Cast<UABAnimInstance>(GetMesh()->GetAnimInstance());
+	ABCHECK(nullptr != ABAnim);
+
+	ABAnim->OnMontageEnded.AddDynamic(this, &AABCharacter::OnAttackMontageEnded);		// 델리게이트 연결
 }
 
 void AABCharacter::MoveForward(float AxisValue)
@@ -200,4 +212,20 @@ void AABCharacter::ViewChange()
 		SetControlMode(EControlMode::GTA);
 		break;
 	}
+}
+
+void AABCharacter::Attack()
+{
+	if (IsAttacking) return;
+
+	// 공격 애니메이션
+	ABAnim->PlayAttackMontage();
+	IsAttacking = true;
+}
+
+
+void AABCharacter::OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupted)
+{
+	ABCHECK(IsAttacking);
+	IsAttacking = false;
 }

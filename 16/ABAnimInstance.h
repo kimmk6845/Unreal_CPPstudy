@@ -16,9 +16,14 @@ private:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Pawn", meta = (AllowPrivateAccess = true))
 		bool IsInAir;
 
+	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly, Category = "Attack", meta = (AllowPrivateAccess = true))
+		UAnimMontage* AttackMontage;
+
 public:
 	UABAnimInstance();
 
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
+
+	void PlayAttackMontage();
 	
 };

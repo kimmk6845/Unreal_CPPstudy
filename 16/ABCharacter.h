@@ -18,6 +18,14 @@ private:
 
 	// 액션매핑
 	void ViewChange();			// 시점 변환
+	void Attack();
+
+
+	UPROPERTY(BlueprintReadOnly, VisibleInstanceOnly, Category = "Attack", meta = (AllowPrivateAccess = true))
+		bool IsAttacking;
+
+	UPROPERTY()
+		class UABAnimInstance* ABAnim;
 
 public:
 	AABCharacter();
@@ -52,4 +60,9 @@ public:
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	virtual void PostInitializeComponents() override;
+
+	UFUNCTION()
+		void OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupted); // 델리게이트
+	
 };
