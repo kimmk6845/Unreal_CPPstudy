@@ -27,6 +27,16 @@ private:
 	UPROPERTY()
 		class UABAnimInstance* ABAnim;
 
+	// ÄÞº¸ º¯¼ö
+	UPROPERTY(BlueprintReadOnly, VisibleInstanceOnly, Category = "Attack", meta = (AllowPrivateAccess = true))
+		bool CanNextCombo;
+	UPROPERTY(BlueprintReadOnly, VisibleInstanceOnly, Category = "Attack", meta = (AllowPrivateAccess = true))
+		bool IsComboInputOn;
+	UPROPERTY(BlueprintReadOnly, VisibleInstanceOnly, Category = "Attack", meta = (AllowPrivateAccess = true))
+		int32 CurrentCombo;
+	UPROPERTY(BlueprintReadOnly, VisibleInstanceOnly, Category = "Attack", meta = (AllowPrivateAccess = true))
+		int32 MaxCombo;
+
 public:
 	AABCharacter();
 
@@ -65,4 +75,7 @@ public:
 	UFUNCTION()
 		void OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupted); // µ¨¸®°ÔÀÌÆ®
 	
+	// ÄÞº¸
+	void AttackStartComboState();
+	void AttackEndComboState();
 };
