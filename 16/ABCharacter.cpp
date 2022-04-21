@@ -43,6 +43,8 @@ AABCharacter::AABCharacter()
 	// 콤보
 	MaxCombo = 4;
 	AttackEndComboState();
+	// 콜리전 설정
+	GetCapsuleComponent()->SetCollisionProfileName(TEXT("ABCharacter"));
 }
 
 void AABCharacter::BeginPlay()
@@ -142,6 +144,7 @@ void AABCharacter::PostInitializeComponents()
 	ABCHECK(nullptr != ABAnim);
 
 	ABAnim->OnMontageEnded.AddDynamic(this, &AABCharacter::OnAttackMontageEnded);		// 델리게이트 연결
+	ABAnim->OnAttackHitCheck.AddUObject(this, &AABCharacter::AttackCheck);
 
 	ABAnim->OnNextAttackCheck.AddLambda([this]() -> void {
 		ABLOG(Warning, TEXT("OnNextAttackCheck"));
@@ -268,4 +271,27 @@ void AABCharacter::AttackEndComboState()
 	IsComboInputOn = false;
 	CanNextCombo = false;
 	CurrentCombo = 0;
+}
+
+void AABCharacter::AttackCheck()
+{
+	FHitResult HitResult;
+	FCollisionQueryParams Params(NAME_None, false, this);
+	bool bResult = GetWorld()->SweepSingleByChannel(
+		HitResult,
+		GetActorLocation(),
+		GetActorLocation() + GetActorForwardVector() * 200.0f,
+		FQuat::Identity,
+		ECollisionChannel::ECC_EngineTraceChannel2,
+		FCollisionShape::MakeSphere(50.0f),
+		Params
+	);
+
+	if (bResult)
+	{
+		if (HitResult.Actor.IsValid())
+		{
+			ABLOG(Warning, TEXT("Hit Actor Name: %s"), *HitResult.Actor->GetName());
+		}
+	}
 }

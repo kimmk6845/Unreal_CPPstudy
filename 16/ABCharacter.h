@@ -78,4 +78,6 @@ public:
 	// ÄÞº¸
 	void AttackStartComboState();
 	void AttackEndComboState();
+	// °ø°Ý
+	void AttackCheck();
 };
